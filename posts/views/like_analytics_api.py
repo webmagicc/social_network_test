@@ -8,23 +8,11 @@ from core.pagination import get_paginated_response, LimitOffsetPagination
 from core.mixins import ApiAuthMixin
 
 
-class PostListApi(ApiAuthMixin, APIView):
-
-    class InputSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Post
-            fields = ('title', 'text')
-
-    class OutputSerializer(serializers.ModelSerializer):
-        class Meta:
-            model = Post
-            fields = ('id', 'title', 'text', 'author')
+class LikeAnalyticsApi(ApiAuthMixin, APIView):
 
     class FilterSerializer(serializers.Serializer):
-        title = serializers.CharField(max_length=255, required=False)
-        author_name = serializers.CharField(max_length=20, required=False)
-        author_email = serializers.CharField(max_length=20, required=False)
-        id = serializers.IntegerField(required=False)
+        date_from = serializers.DateField()
+        date_to = serializers.DateField()
 
     def get(self, request):
         filters_serializer = self.FilterSerializer(data=request.query_params)
