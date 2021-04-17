@@ -19,6 +19,8 @@ django-filter = "^2.4.0"
 drf-yasg = "^1.20.0"
 argon2-cffi = "^20.1.0"
 factory-boy = "^3.2.0"
+pydentic = "^0.0.1-alpha.3"
+pydantic = "^1.8.1"
 
 [tool.poetry.dev-dependencies]
 

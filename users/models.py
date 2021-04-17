@@ -1,9 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils import timezone
 from django.contrib.auth.password_validation import validate_password
 
-from core.models import make_upload_path
+from core.models import make_upload_path, CreatedUpdatedModel
 
 
 class UserManager(BaseUserManager):
@@ -38,7 +38,7 @@ class UserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
 
-class User(AbstractBaseUser):
+class User(PermissionsMixin, AbstractBaseUser):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=50, default="", blank=True, db_index=True)
     last_name = models.CharField(max_length=50, default="", blank=True, db_index=True)
@@ -55,3 +55,8 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'email'
 
     objects = UserManager()
+
+
+class UserLastActivity(CreatedUpdatedModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    url = models.TextField(default="", blank=True)
